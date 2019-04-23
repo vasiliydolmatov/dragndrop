@@ -1,8 +1,6 @@
 .draggable {
     position: relative;
-    background: #F5F8FA;
-    margin: 5px 0;
-    border: 1px solid #48AFF0;
+    padding: 3px;
 
     &:hover &-remove-btn {
         display: block;
@@ -12,9 +10,15 @@
         display: none;
         cursor: pointer;
         position: absolute;
-        top: 1px;
-        right: 0;
+        top: 5px;
+        right: 5px;
 
+        svg {
+            fill: #394B59;
+            width: 1.5em;
+            height: 1.5em;
+        }
+        
         &:hover svg {
             fill: #dd4343;
         }

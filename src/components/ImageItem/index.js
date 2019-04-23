@@ -4,13 +4,10 @@ import { Icon, Card, Button } from "antd";
 import "./styles.scss";
 
 export default class ImageItem extends React.Component {
-  state = {
-    isDeleted: false
-  };
 
   renderImage = () => {
-    const { id, url, idx } = this.props;
-    const { isDeleted } = this.state;
+    const { id, url, idx, isDeleted, changeDeletness } = this.props;
+
     return (
       <Draggable draggableId={id} index={idx} key={id}>
         {dragProvided => (
@@ -29,10 +26,9 @@ export default class ImageItem extends React.Component {
             {dragProvided.placeholder}
             <Icon
               type="delete"
-              theme="filled"
               className="draggable-remove-btn"
               onClick={() => {
-                this.setState({ isDeleted: true });
+                changeDeletness(id);
               }}
             />
           </div>
@@ -42,7 +38,7 @@ export default class ImageItem extends React.Component {
   };
 
   renderAlert = () => {
-    const { id, deleteItem, columnId } = this.props;
+    const { id, deleteItem, columnId, changeDeletness } = this.props;
 
     const arrayNameToDelete =
       columnId === "first_col" ? "firstColArr" : "secondColArr";
@@ -53,9 +49,7 @@ export default class ImageItem extends React.Component {
         <div className="alert_card-buttons">
           <Button
             type="default"
-            onClick={() => {
-              this.setState({ isDeleted: false });
-            }}
+            onClick={() => changeDeletness(null)}
           >
             CANCEL
           </Button>

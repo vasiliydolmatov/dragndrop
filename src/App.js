@@ -81,6 +81,22 @@ class App extends Component {
     });
   };
 
+  changeDeletness = (itemId) => {
+    this.setState(({ firstColArr, secondColArr }) => ({
+      firstColArr: this.changeIsDeletedProp(firstColArr, itemId),
+      secondColArr: this.changeIsDeletedProp(secondColArr, itemId),
+    }))
+  }
+
+  changeIsDeletedProp = (arr, id) => {
+    return arr.map(el => {
+      return {
+        ...el,
+        isDeleted: el.id === id ? true : false,
+      }
+    })
+  }
+
   render() {
     const { firstColArr, secondColArr, isDragOn } = this.state;
     return (
@@ -92,6 +108,7 @@ class App extends Component {
             list={firstColArr}
             isDragOn={isDragOn}
             deleteItem={this.deleteItem}
+            changeDeletness={this.changeDeletness}
           />
           <Column
             columnId="second_col"
@@ -99,6 +116,7 @@ class App extends Component {
             list={secondColArr}
             isDragOn={isDragOn}
             deleteItem={this.deleteItem}
+            changeDeletness={this.changeDeletness}
           />
         </div>
       </DragDropContext>

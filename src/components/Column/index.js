@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Upload, Icon } from "antd";
+import { Card, Upload, Icon, notification } from "antd";
 import { Droppable } from "react-beautiful-dnd";
 import shortid from "shortid";
 import "antd/dist/antd.css";
@@ -8,7 +8,7 @@ import "./styles.scss";
 
 export default class Column extends React.Component {
   state = {
-    isDragEnter: false,
+    isDragEnter: false
   };
 
   onDrop = uploaded => {
@@ -17,16 +17,29 @@ export default class Column extends React.Component {
 
     if (file.status === "uploading") return null;
 
+    if (!file.type || file.type.indexOf("image/") === -1) {
+      notification.open({
+        message: "Wrong file format!",
+        duration: 3
+      });
+      this.setState({
+        isDragEnter: false
+      });
+      return null;
+    }
+
+    this.setState({
+      isDragEnter: false
+    });
+
     const filePreview = {
       url: window.URL.createObjectURL(file.originFileObj),
-      id: shortid.generate()
+      id: shortid.generate(),
+      isDeleted: false
     };
     if (filePreview) {
       saveImgToList(filePreview, columnId);
     }
-    this.setState({
-      isDragEnter: false,
-    });
     return null;
   };
 
@@ -48,7 +61,6 @@ export default class Column extends React.Component {
     <div onDragLeave={this.onDragLeave}>
       <Upload.Dragger
         className="dropzone"
-        accept="image/*"
         onChange={this.onDrop}
         showUploadList={false}
         openFileDialogOnClick={false}
@@ -60,12 +72,12 @@ export default class Column extends React.Component {
   );
 
   renderImagesList = () => {
-    const { list, deleteItem, columnId } = this.props;
+    const { list, deleteItem, columnId, changeDeletness } = this.props;
 
     if (!list.length) return null;
 
     return list.map((img, idx) => {
-      const { url, id } = img;
+      const { url, id, isDeleted } = img;
       return (
         <ImageItem
           url={url}
@@ -74,6 +86,8 @@ export default class Column extends React.Component {
           deleteItem={deleteItem}
           columnId={columnId}
           key={id}
+          isDeleted={isDeleted}
+          changeDeletness={changeDeletness}
         />
       );
     });
@@ -94,7 +108,7 @@ export default class Column extends React.Component {
               className="droppable"
             >
               {!isDragEnter && !list.length && (
-                <p className="column-text">Drag your your file here</p>
+                <p className="column-text">Drag your file here</p>
               )}
               {this.renderImagesList()}
               {provided.placeholder}
