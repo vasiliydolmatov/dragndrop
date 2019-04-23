@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Column from "./components/Column";
+import Column from "./components/Column/index";
 import { DragDropContext } from "react-beautiful-dnd";
 import { notification } from "antd";
 

@@ -3,13 +3,12 @@ import { Card, Upload, Icon } from "antd";
 import { Droppable } from "react-beautiful-dnd";
 import shortid from "shortid";
 import "antd/dist/antd.css";
-import ImageItem from "./ImageItem";
+import ImageItem from "../ImageItem";
 import "./styles.scss";
 
 export default class Column extends React.Component {
   state = {
     isDragEnter: false,
-    isHovered: false
   };
 
   onDrop = uploaded => {
@@ -27,7 +26,6 @@ export default class Column extends React.Component {
     }
     this.setState({
       isDragEnter: false,
-      isHovered: false
     });
     return null;
   };
@@ -78,14 +76,6 @@ export default class Column extends React.Component {
           key={id}
         />
       );
-    });
-  };
-
-  onDragStart = () => {
-    const { isDragOn } = this.props;
-    if (!isDragOn) return null;
-    this.setState({
-      isHovered: true
     });
   };
 
